@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-md-2">
+                <p>Filter By :</p>
+            </div>
+
+            <div class="col-md-4">
+                <input type="text" [(ngModel)]='filterBy'/>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-md-6">
+            <h4>Filtered By: {{_filterBy}}</h4>
+        </div>
+
+    <div class="table-responsive">
+        <table class="table"
+               *ngIf="products && products.length">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <button class="btn btn-primary"
+                                style="width: 120px;"
+                                (click)='toggleImage()'>
+                            <span *ngIf='!hideImage'> Show </span><span *ngIf='hideImage'> Hide </span>Image
+                        </button>
+                    </th>
+                    <th>Product</th>
+                    <th>Code</th>
+                    <th>Available</th>
+                    <th>Price</th>
+                    <th>Ratings</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let product of filteredProducts || products"
+                    style="height: 75px">
+                    <td>
+                        <img *ngIf='hideImage'
+                             [src]="product.imageUrl"
+                             width="50px"
+                             height="50px"
+                             [title]="product.productName"
+                             alt="">
+                    </td>
+                    <td><a [routerLink]="['/products',product.productId]">{{product.productName}}</a></td>
+                    <td>{{product.productCode | lowercase | convertToSpaces : '-'}}</td>
+                    <td>{{product.releaseDate}}</td>
+                    <td>{{product.price | currency:'INR'}}</td>
+                    <td>
+                        <star [ratingNo]='product.starRating'
+                              (notify)='starClicked($event)'></star>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
